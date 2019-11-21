@@ -22,7 +22,7 @@
 <meta property="og:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574211340218.png">
 <meta property="og:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574212068462.png">
 <meta property="og:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574212861954.png">
-<meta property="og:updated_time" content="2019-11-20T06:44:48.013Z">
+<meta property="og:updated_time" content="2019-11-21T11:19:57.982Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="http-ctf">
 <meta name="twitter:description" content="在做bugku的web基础题时，对http的内容做了下整理。">
@@ -159,30 +159,66 @@
         <p>在做bugku的web基础题时，对http的内容做了下整理。</p>
 <a id="more"></a>
 
-<h2 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h2><p><img src="http-ctf/1574209985855.png" alt="avatar"></p>
+<h2 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h2><img src="http-ctf/1574209985855.png" alt="avatar" style="zoom:80%;">
+
 <blockquote>
-<p>域名解析，把 flag.baidu.com解析到123.206.87.240。123.206.87.240是ip地址，flag.baidu.com是域名，看起来就像是平常正常访问的网页的名字，一个ip可以对应多个域名，不同网页共享一个ip很正常。然后问题就来了，ip相同，如何区分到底是去哪个域名下的内容？</p>
-<p>这里用到http协议中的host字段，在host中加上要访问的域名的名称，对方就知道你想访问的是这个ip下的哪个域名</p>
+<p>域名解析，把 flag.baidu.com解析到123.206.87.240。123.206.87.240是ip地址，flag.baidu.com是域名，看起来就像是平常正常访问的网页的名字。</p>
 </blockquote>
-<p><img src="http-ctf/1574210664045.png" alt="avatar"></p>
 <blockquote>
-<p>可以看到flag就出来了</p>
+<p>在实际生活中，一个ip可以对应多个域名，不同网页共享一个ip。</p>
 </blockquote>
-<h2 id="你从哪里来"><a href="#你从哪里来" class="headerlink" title="你从哪里来"></a>你从哪里来</h2><p><img src="http-ctf/1574210868307.png" alt="avatar"></p>
+<blockquote>
+<p>然后问题就来了，ip相同，http如何区分到底是去哪个域名下的内容？</p>
+<p>这里用到http头部的host字段，在host中加上要访问的域名的名称，对方就知道你想访问的是这个ip下的哪个域名</p>
+</blockquote>
+<blockquote>
+<p>构造:</p>
+<p>host：flag.baidu.com</p>
+</blockquote>
+<img src="http-ctf/1574210664045.png" alt="avatar" style="zoom: 80%;">
+
+<blockquote>
+<p>flag就出来了</p>
+</blockquote>
+<h2 id="你从哪里来"><a href="#你从哪里来" class="headerlink" title="你从哪里来"></a>你从哪里来</h2><img src="http-ctf/1574210868307.png" alt="avatar" style="zoom:80%;">
+
 <blockquote>
 <p>点进去后看到提示， are you from google? </p>
-<p>你是从谷歌来的吗？在http中有一个字段叫做referer,他携带的内容是该http请求的来源地址，通俗来说就是从哪个链接访问的，该字段经常用于防盗链和防csrf（跨站请求伪造）</p>
+<p>你是从谷歌来的吗？</p>
 </blockquote>
-<p><img src="http-ctf/1574211340218.png" alt="avatar"></p>
+<blockquote>
+<p>在http中有一个字段叫做referer,他携带的内容是该http请求的来源地址，通俗来说就是从哪个链接访问的，该字段经常用于防盗链和防csrf（跨站请求伪造）</p>
+</blockquote>
+<blockquote>
+<p>了解到了这一步，接下来就是构造http头</p>
+<p>referer：<a href="https://www.google.com" target="_blank" rel="noopener">https://www.google.com</a></p>
+</blockquote>
+<img src="http-ctf/1574211340218.png" alt="avatar" style="zoom:80%;">
+
 <blockquote>
 <p>可以看到，在referer头部加上谷歌的网址，假装你是从谷歌访问的这个网站，flag就出来了。</p>
 </blockquote>
-<h2 id="程序员本地网站"><a href="#程序员本地网站" class="headerlink" title="程序员本地网站"></a>程序员本地网站</h2><p><img src="http-ctf/1574212068462.png" alt="avatar"></p>
+<h2 id="程序员本地网站"><a href="#程序员本地网站" class="headerlink" title="程序员本地网站"></a>程序员本地网站</h2><img src="http-ctf/1574212068462.png" alt="avatar" style="zoom:80%;">
+
 <blockquote>
-<p>点进去网页提示请从本地访问，另外网址也在暗示localhost，localhost表示的是本地，也就是127.0.0.1，这个ip是表示本地的，这里和上一题不同，referer携带的是链接，而用于表示本地的是ip地址，这里要用到的是http协议中的X-Forwarded-For（简称XFF头），他代表请求端的真实ip地址，他的标准格式是 X-Forwarded-For: client1, proxy1, proxy2，…<br>从标准格式可以看出，XFF头信息可以有多个，中间用逗号分隔，其中第一项为真实的客户端ip，后面的则是曾经经过的代理或负载均衡的ip地址，经过几个就会出现几个，如果没有就没有。</p>
+<p>点进去网页提示请从本地访问，另外网址中包含localhost, 也是在暗示，localhost是域名，表示的是本地，也就是127.0.0.1本地ip指向的域名。</p>
+</blockquote>
+<blockquote>
+<p>这里要用到的是http协议中的X-Forwarded-For（简称XFF头），他代表请求端的真实ip地址。</p>
+</blockquote>
+<blockquote>
+<p>他的标准格式是 X-Forwarded-For: client1, proxy1, proxy2，…</p>
+</blockquote>
+<blockquote>
+<p>从标准格式可以看出，XFF头信息可以有多个，中间用逗号分隔，其中第一项为真实的客户端ip，后面的则是曾经经过的代理或负载均衡的ip地址，经过几个就会出现几个，如果没有就没有。</p>
+</blockquote>
+<blockquote>
 <p>这道题只需要表示从本地访问，所以只需要构造 X-Forwarded-For: 127.0.0.1就好了，这里不能填localhost因为loaclhost是域名，他对应的ip地址是127.0.0.1，而XFF头携带的是ip地址。</p>
 </blockquote>
-<p><img src="http-ctf/1574212861954.png" alt="avatar"></p>
+<img src="http-ctf/1574212861954.png" alt="avatar" style="zoom:80%;">
+
+
+
 
       
 
@@ -411,11 +447,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">后端</a>
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">java</a>
+                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -427,11 +463,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
+                <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
+                <a href="javascript:void(0)" class="js-tag color5">java</a>
               </li>
             
             <div class="clearfix"></div>
