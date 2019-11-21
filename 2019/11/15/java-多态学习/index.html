@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>java-多态的学习 | taotao-blog</title>
+  <title>java-多态与静态之间的关系 | taotao-blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="*概述  最近在重新回顾java知识点时，发现多态这一块掌握的不是很好，于是写篇博客，顺便做个笔记。在这里想谈谈静态方法与静态变量和多态的关系。  12&amp;gt;Father father = new Son();&amp;gt;   总得来说，成员函数不管静态还是非静态，以及成员变量在编译时都看左边父类名，具体运行则分为不同的情况。">
+  <meta name="description" content="概述 在这里想谈谈静态方法与静态变量和多态的关系。  12&amp;gt;Father father = new Son();&amp;gt;   总得来说，成员函数不管静态还是非静态，以及成员变量在编译时都看左边父类名，具体运行则分为不同的情况。">
 <meta name="keywords" content="后端,java">
 <meta property="og:type" content="article">
-<meta property="og:title" content="java-多态的学习">
+<meta property="og:title" content="java-多态与静态之间的关系">
 <meta property="og:url" content="http://yoursite.com/2019/11/15/java-多态学习/index.html">
 <meta property="og:site_name" content="taotao-blog">
-<meta property="og:description" content="*概述  最近在重新回顾java知识点时，发现多态这一块掌握的不是很好，于是写篇博客，顺便做个笔记。在这里想谈谈静态方法与静态变量和多态的关系。  12&amp;gt;Father father = new Son();&amp;gt;   总得来说，成员函数不管静态还是非静态，以及成员变量在编译时都看左边父类名，具体运行则分为不同的情况。">
+<meta property="og:description" content="概述 在这里想谈谈静态方法与静态变量和多态的关系。  12&amp;gt;Father father = new Son();&amp;gt;   总得来说，成员函数不管静态还是非静态，以及成员变量在编译时都看左边父类名，具体运行则分为不同的情况。">
 <meta property="og:locale" content="en">
-<meta property="og:updated_time" content="2019-11-17T08:13:52.358Z">
+<meta property="og:updated_time" content="2019-11-21T11:04:35.398Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="java-多态的学习">
-<meta name="twitter:description" content="*概述  最近在重新回顾java知识点时，发现多态这一块掌握的不是很好，于是写篇博客，顺便做个笔记。在这里想谈谈静态方法与静态变量和多态的关系。  12&amp;gt;Father father = new Son();&amp;gt;   总得来说，成员函数不管静态还是非静态，以及成员变量在编译时都看左边父类名，具体运行则分为不同的情况。">
+<meta name="twitter:title" content="java-多态与静态之间的关系">
+<meta name="twitter:description" content="概述 在这里想谈谈静态方法与静态变量和多态的关系。  12&amp;gt;Father father = new Son();&amp;gt;   总得来说，成员函数不管静态还是非静态，以及成员变量在编译时都看左边父类名，具体运行则分为不同的情况。">
   
     <link rel="alternative" href="/atom.xml" title="taotao-blog" type="application/atom+xml">
   
@@ -136,7 +136,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      java-多态的学习
+      java-多态与静态之间的关系
     </h1>
   
 
@@ -150,9 +150,8 @@
     <div class="article-entry" itemprop="articleBody">
       
         <hr>
-<p>*概述</p>
-<blockquote>
-<p>最近在重新回顾java知识点时，发现多态这一块掌握的不是很好，于是写篇博客，顺便做个笔记。在这里想谈谈静态方法与静态变量和多态的关系。 </p>
+<h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><blockquote>
+<p>在这里想谈谈静态方法与静态变量和多态的关系。 </p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;Father father = new Son();</span><br><span class="line">&gt;</span><br></pre></td></tr></table></figure>
 </blockquote>
 <blockquote>
@@ -160,19 +159,7 @@
 </blockquote>
 <a id="more"></a>
 
-<p>*第一种</p>
-<p>运行非静态成员函数时，符合大多数人的想法，是依据子类的方法来执行，动态成员函数支持多态，除非子类中没有这个方法，这个时候则会调用父类的方法。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class Father</span><br><span class="line">&#123;</span><br><span class="line">	void method1()</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.println(&quot;father method_1&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	void method2()</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.println(&quot;father method_2&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	void method4()</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.println(&quot;father method_4&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Son extends Father</span><br><span class="line">&#123;</span><br><span class="line">	void method1()</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.println(&quot;son method_1&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">	void method3()</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.println(&quot;son method_3&quot;);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	void method4()</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.println(&quot;son method_4&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个时候运行</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">Son son = new Son();</span><br><span class="line">son.method1();</span><br><span class="line">son.method2();</span><br><span class="line">son.method3();</span><br><span class="line"></span><br><span class="line">Father father = new Son();</span><br><span class="line">father.method1();</span><br><span class="line">father.method2();</span><br><span class="line">father.method4();</span><br></pre></td></tr></table></figure>
-
-<p>结果</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">son method_1</span><br><span class="line">father method_2</span><br><span class="line">son method_3</span><br><span class="line"></span><br><span class="line">son method_1</span><br><span class="line">father method_2</span><br><span class="line">son method_4</span><br></pre></td></tr></table></figure>
-
-<p>可以看到 这个时候两种运行结果是完全一样的。</p>
-<p>*第二种</p>
-<p>父类中的静态方法，可以被继承但不能被重写，原因在于静态方法早在编译时就已经确定下来了，后面运行过程中不支持多态。</p>
+<h2 id="静态方法和静态成员变量"><a href="#静态方法和静态成员变量" class="headerlink" title="静态方法和静态成员变量"></a>静态方法和静态成员变量</h2><p>父类中的静态方法，可以被继承但不能被重写，原因在于静态方法早在编译时就已经确定下来了，后面运行过程中不支持多态。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Father</span><br><span class="line">&#123;</span><br><span class="line">	static void method()</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.println(&quot;father method&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Son extends Father</span><br><span class="line">&#123;</span><br><span class="line">	static void method()</span><br><span class="line">	&#123;</span><br><span class="line">		System.out.println(&quot;son method&quot;);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Father father = new Son();</span><br><span class="line">father.method();</span><br></pre></td></tr></table></figure>
@@ -181,13 +168,15 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">father method</span><br></pre></td></tr></table></figure>
 
 <p>同理，当父类中使用静态变量时，子类中的同名变量也无法覆盖，变量的值在编译时就已经确定下来了。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Father</span><br><span class="line">&#123;</span><br><span class="line">    static int num = 3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Son extends Father</span><br><span class="line">&#123;</span><br><span class="line">    static int num = 4;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Father</span><br><span class="line">&#123;</span><br><span class="line">    static int num = 3;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Son extends Father</span><br><span class="line">&#123;</span><br><span class="line">    static int num = 4; //只要是同名变量，这里加不加static结果一样。</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Father father = new Son();        </span><br><span class="line">System.out.println(father.num);</span><br><span class="line">Son son = new Son();</span><br><span class="line">System.out.println(son.num);</span><br></pre></td></tr></table></figure>
 
 <p>结果</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">3</span><br><span class="line">4</span><br></pre></td></tr></table></figure>
 
+<h2 id="非静态成员函数"><a href="#非静态成员函数" class="headerlink" title="非静态成员函数"></a>非静态成员函数</h2><p>运行非静态成员函数时，是依据子类的方法来执行，动态成员函数支持多态，除非子类中没有这个方法，这个时候则会调用父类的方法。</p>
+<p>这里不进行具体的代码展现。</p>
 
       
 
@@ -420,14 +409,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">后端</a>
               </li>
              
@@ -441,6 +422,14 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">移动端</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">ctf</a>
               </li>
             
             <div class="clearfix"></div>
