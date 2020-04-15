@@ -6,15 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: java | taotao-blog</title>
+  <title>hgame-week2 | taotao-blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="taotao-blog">
-<meta property="og:url" content="http://yoursite.com/tags/java/index.html">
+  <meta name="description" content="hgame week2webcosmos的博客后台">
+<meta name="keywords" content="ctf">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hgame-week2">
+<meta property="og:url" content="http://yoursite.com/2020/04/15/hgame-week2/index.html">
 <meta property="og:site_name" content="taotao-blog">
+<meta property="og:description" content="hgame week2webcosmos的博客后台">
 <meta property="og:locale" content="en">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JiJIu6.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JiJTHO.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JiYCVS.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JiYPUg.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JiYi5Q.png">
+<meta property="og:updated_time" content="2020-04-15T14:42:58.046Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="taotao-blog">
+<meta name="twitter:title" content="hgame-week2">
+<meta name="twitter:description" content="hgame week2webcosmos的博客后台">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/04/15/JiJIu6.png">
   
     <link rel="alternative" href="/atom.xml" title="taotao-blog" type="application/atom+xml">
   
@@ -124,64 +135,222 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-hgame-week2" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2019" class="archive-year">2019</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2019/11/15/java-多态学习/" class="archive-article-date">
-  	<time datetime="2019-11-15T12:53:09.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2019-11-15</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2019/11/15/java-多态学习/">java-多态与静态之间的关系</a>
+    <h1 class="article-title" itemprop="name">
+      hgame-week2
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/04/15/hgame-week2/" class="archive-article-date">
+  	<time datetime="2020-04-15T14:32:50.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-04-15</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="hgame-week2"><a href="#hgame-week2" class="headerlink" title="hgame week2"></a>hgame week2</h1><h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="cosmos的博客后台"><a href="#cosmos的博客后台" class="headerlink" title="cosmos的博客后台"></a>cosmos的博客后台</h3><a id="more"></a>
+
+<blockquote>
+<p>查看网页源代码没有什么收获，尝试伪协议读源码，构造 <a href="http://cosmos-admin.hgame.day-day.work/index.php?action=php://filter/read=convert.base64-encode/resource=login.php" target="_blank" rel="noopener">http://cosmos-admin.hgame.day-day.work/index.php?action=php://filter/read=convert.base64-encode/resource=login.php</a> ，发现base64编码后的源代码，同理获得index.php和admin.php的源代码。</p>
+</blockquote>
+<blockquote>
+<p>本来想直接读取config.php但是在index.php里被filter了，无法直接读取用户名和密码的具体值，于是继续进行代码审计。</p>
+<p>发现debug参数传入变量名会显示变量值，在login.php里得知用户名和密码的变量为admin_username和admin_password，借助debug获取变量值。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">//login.php</span><br><span class="line">&lt;?php</span><br><span class="line">include &quot;config.php&quot;;</span><br><span class="line">session_start();</span><br><span class="line"></span><br><span class="line">//Only for debug</span><br><span class="line">if (DEBUG_MODE)&#123;</span><br><span class="line">    if(isset($_GET[&apos;debug&apos;])) &#123;</span><br><span class="line">        $debug = $_GET[&apos;debug&apos;];</span><br><span class="line">        if (!preg_match(&quot;/^[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*$/&quot;, $debug)) &#123;</span><br><span class="line">            die(&quot;args error!&quot;);</span><br><span class="line">        &#125;</span><br><span class="line">        eval(&quot;var_dump($$debug);&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">if(isset($_SESSION[&apos;username&apos;])) &#123;</span><br><span class="line">    header(&quot;Location: admin.php&quot;);</span><br><span class="line">    exit();</span><br><span class="line">&#125;</span><br><span class="line">else &#123;</span><br><span class="line">    if (isset($_POST[&apos;username&apos;]) &amp;&amp; isset($_POST[&apos;password&apos;])) &#123;</span><br><span class="line">        if ($admin_password == md5($_POST[&apos;password&apos;]) &amp;&amp; $_POST[&apos;username&apos;] === $admin_username)&#123;</span><br><span class="line">            $_SESSION[&apos;username&apos;] = $_POST[&apos;username&apos;];</span><br><span class="line">            header(&quot;Location: admin.php&quot;);</span><br><span class="line">            exit();</span><br><span class="line">        &#125;</span><br><span class="line">        else &#123;</span><br><span class="line">            echo &quot;用户名或密码错误&quot;;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://s1.ax1x.com/2020/04/15/JiJIu6.png" alt="23"></p>
+<blockquote>
+<p>其中密码要求MD5后和原来密码相同，这里涉及到php里md5的绕过和==的弱比较，因为密码是0e开头，在和另一个字符串比较的时间会变成零，所以找一个MD5后也是0e开头的传入即可。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">//admin.php</span><br><span class="line">&lt;?php</span><br><span class="line">include &quot;config.php&quot;;</span><br><span class="line">session_start();</span><br><span class="line">if(!isset($_SESSION[&apos;username&apos;])) &#123;</span><br><span class="line">    header(&apos;Location: index.php&apos;);</span><br><span class="line">    exit();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function insert_img() &#123;</span><br><span class="line">    if (isset($_POST[&apos;img_url&apos;])) &#123;</span><br><span class="line">        $img_url = @$_POST[&apos;img_url&apos;];</span><br><span class="line">        $url_array = parse_url($img_url);</span><br><span class="line">        if (@$url_array[&apos;host&apos;] !== &quot;localhost&quot; &amp;&amp; $url_array[&apos;host&apos;] !== &quot;timgsa.baidu.com&quot;) &#123;</span><br><span class="line">            return false;</span><br><span class="line">        &#125;   </span><br><span class="line">        $c = curl_init();</span><br><span class="line">        curl_setopt($c, CURLOPT_URL, $img_url);</span><br><span class="line">        curl_setopt($c, CURLOPT_RETURNTRANSFER, 1);</span><br><span class="line">        $res = curl_exec($c);</span><br><span class="line">        curl_close($c);</span><br><span class="line">        $avatar = base64_encode($res);</span><br><span class="line"></span><br><span class="line">        if(filter_var($img_url, FILTER_VALIDATE_URL)) &#123;</span><br><span class="line">            return $avatar;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    else &#123;</span><br><span class="line">        return base64_encode(file_get_contents(&quot;static/logo.png&quot;));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>登录成功之后，代码审计admin.php，没有对imagl_url进行任何限制和处理，属于ssrf攻击，尝试了不同的协议dict，file，gopher；后来发现自己想复杂了，payload构造img_url=file://localhost/flag就可以了…</p>
+<p>网页源代码里把图片的base64值解密得出flag</p>
+</blockquote>
+<h3 id="cosmos的留言板"><a href="#cosmos的留言板" class="headerlink" title="cosmos的留言板"></a>cosmos的留言板</h3><blockquote>
+<p>首先根据题目描述，感觉应该是sql注入。</p>
+<p>尝试id=1’ union select database() #发现空格和小写select还有#被过滤，采用大写SELECT和%0a，%23，绕过</p>
+<p>先用order by确认返回字段的数量，发现只有1，然后确认返回位置；接下来就一步一步注入获取表名和字段名。</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/04/15/JiJTHO.png" alt="k"></p>
+<p><img src="https://s1.ax1x.com/2020/04/15/JiYCVS.png" alt="i"></p>
+<p><img src="https://s1.ax1x.com/2020/04/15/JiYPUg.png" alt="rs"></p>
+<h2 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h2><h3 id="cosmos的午餐"><a href="#cosmos的午餐" class="headerlink" title="cosmos的午餐"></a>cosmos的午餐</h3><blockquote>
+<p>打开发现pcapng文件和一个log文件，目测是流量审计的题目，通过查找资料后发现log文件是用来解密tsl，解密后，在导出对象http里看看有没有压缩包之类的，发现有x-www-form-urlencoded（主要和里面其他文件类型不同，所以点开看看），发现pk开头是压缩包！</p>
+</blockquote>
+<p><img src="https://s1.ax1x.com/2020/04/15/JiYi5Q.png" alt="1580442556802"></p>
+<blockquote>
+<p>压缩包下载后解压发现是一张图片，名字outguess with key，提示要用outguess，key根据题目描述在图片备注里，打开虚拟机ubuntu</p>
+<p>outguess -kk “gUNrbbdR9XhRBDGpzz” -r “kkk.jpg” iiit.txt</p>
+<p>得到文件 打开后显示<a href="https://dwz.cn/69rOREdu" target="_blank" rel="noopener">https://dwz.cn/69rOREdu</a></p>
+<p>进入后下载了一个压缩包，打开一个二维码，扫描得到flag</p>
+</blockquote>
+<h3 id="所见即为假"><a href="#所见即为假" class="headerlink" title="所见即为假"></a>所见即为假</h3><blockquote>
+<p>根据题目描述还有压缩包名字fake，怎么看都感觉像伪加密…. 尝试直接打开发现要密码，用7zip直接打开伪加密文件；另外压缩包给了提示F5 key: NllD7CQon6dBsFLr</p>
+<p>继续用f5对图片进行解密，得出一大串：526172211A0701003392B5E50A01050600050101808000B9527AEA2402030BA70004A70020CB5BDC2D80000008666C61672E7478740A03029A9D6C65DFCED5016867616D657B343038375E7A236D737733344552746E46557971704B556B32646D4C505736307D1D77565103050400</p>
+<p>放入hex解码后得出flag</p>
+</blockquote>
+<h3 id="地球上最后的夜晚"><a href="#地球上最后的夜晚" class="headerlink" title="地球上最后的夜晚"></a>地球上最后的夜晚</h3><blockquote>
+<p>解压后一个pdf一个压缩包，由于最近一直在做各种隐写，首先先去查查pdf隐写，发现wbs43open这个工具，联系到pdf文件名no password解密无需密码，直接用这个工具解密，得到Zip Password: OmR#O12#b3b%s*IW，打开发现是word文档，在压缩包里右键查看文件直接进入隐藏的zip，发现是一些xml文件；查询后得知flag一般放在word文件下的document里，进入word文件夹后发现secret.xml，在里面获得flag</p>
+</blockquote>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>谢谢你请我吃糖果<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">后端</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">java</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">ctf</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/04/15/hgame-week2/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/04/15/hgame-week3/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          hgame-week3
+        
+      </div>
+    </a>
   
   
-    </div></section>
+    <a href="/2020/01/25/hgame-week1/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">hgame_week1</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+  
+  
   
 
-    
+  
+
+  
+
+  
 
 
           </div>
@@ -204,9 +373,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
