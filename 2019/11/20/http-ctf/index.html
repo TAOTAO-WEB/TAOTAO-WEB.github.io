@@ -16,17 +16,17 @@
 <meta property="og:site_name" content="taotao-blog">
 <meta property="og:description" content="在做bugku的web基础题时，对http的内容做了下整理。">
 <meta property="og:locale" content="en">
-<meta property="og:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574209985855.png">
-<meta property="og:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574210664045.png">
-<meta property="og:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574210868307.png">
-<meta property="og:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574211340218.png">
-<meta property="og:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574212068462.png">
-<meta property="og:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574212861954.png">
-<meta property="og:updated_time" content="2019-11-21T11:19:57.982Z">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JPvNJx.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JPv0yD.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JPvBOe.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JPvswd.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JPvOpV.png">
+<meta property="og:image" content="https://s1.ax1x.com/2020/04/15/JPx8c8.png">
+<meta property="og:updated_time" content="2020-04-15T12:51:15.567Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="http-ctf">
 <meta name="twitter:description" content="在做bugku的web基础题时，对http的内容做了下整理。">
-<meta name="twitter:image" content="http://yoursite.com/2019/11/20/http-ctf/http-ctf/1574209985855.png">
+<meta name="twitter:image" content="https://s1.ax1x.com/2020/04/15/JPvNJx.png">
   
     <link rel="alternative" href="/atom.xml" title="taotao-blog" type="application/atom+xml">
   
@@ -159,7 +159,7 @@
         <p>在做bugku的web基础题时，对http的内容做了下整理。</p>
 <a id="more"></a>
 
-<h2 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h2><img src="http-ctf/1574209985855.png" alt="avatar" style="zoom:80%;">
+<h2 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h2><img src="https://s1.ax1x.com/2020/04/15/JPvNJx.png" alt="avatar" style="zoom:80%;">
 
 <blockquote>
 <p>域名解析，把 flag.baidu.com解析到123.206.87.240。123.206.87.240是ip地址，flag.baidu.com是域名，看起来就像是平常正常访问的网页的名字。</p>
@@ -175,12 +175,12 @@
 <p>构造:</p>
 <p>host：flag.baidu.com</p>
 </blockquote>
-<img src="http-ctf/1574210664045.png" alt="avatar" style="zoom: 80%;">
+<img src="https://s1.ax1x.com/2020/04/15/JPv0yD.png" alt="avatar" style="zoom: 80%;">
 
 <blockquote>
 <p>flag就出来了</p>
 </blockquote>
-<h2 id="你从哪里来"><a href="#你从哪里来" class="headerlink" title="你从哪里来"></a>你从哪里来</h2><img src="http-ctf/1574210868307.png" alt="avatar" style="zoom:80%;">
+<h2 id="你从哪里来"><a href="#你从哪里来" class="headerlink" title="你从哪里来"></a>你从哪里来</h2><img src="https://s1.ax1x.com/2020/04/15/JPvBOe.png" alt="avatar" style="zoom:80%;">
 
 <blockquote>
 <p>点进去后看到提示， are you from google? </p>
@@ -193,12 +193,12 @@
 <p>了解到了这一步，接下来就是构造http头</p>
 <p>referer：<a href="https://www.google.com" target="_blank" rel="noopener">https://www.google.com</a></p>
 </blockquote>
-<img src="http-ctf/1574211340218.png" alt="avatar" style="zoom:80%;">
+<img src="https://s1.ax1x.com/2020/04/15/JPvswd.png" alt="avatar" style="zoom:80%;">
 
 <blockquote>
 <p>可以看到，在referer头部加上谷歌的网址，假装你是从谷歌访问的这个网站，flag就出来了。</p>
 </blockquote>
-<h2 id="程序员本地网站"><a href="#程序员本地网站" class="headerlink" title="程序员本地网站"></a>程序员本地网站</h2><img src="http-ctf/1574212068462.png" alt="avatar" style="zoom:80%;">
+<h2 id="程序员本地网站"><a href="#程序员本地网站" class="headerlink" title="程序员本地网站"></a>程序员本地网站</h2><img src="https://s1.ax1x.com/2020/04/15/JPvOpV.png" alt="avatar" style="zoom:80%;">
 
 <blockquote>
 <p>点进去网页提示请从本地访问，另外网址中包含localhost, 也是在暗示，localhost是域名，表示的是本地，也就是127.0.0.1本地ip指向的域名。</p>
@@ -215,7 +215,7 @@
 <blockquote>
 <p>这道题只需要表示从本地访问，所以只需要构造 X-Forwarded-For: 127.0.0.1就好了，这里不能填localhost因为loaclhost是域名，他对应的ip地址是127.0.0.1，而XFF头携带的是ip地址。</p>
 </blockquote>
-<img src="http-ctf/1574212861954.png" alt="avatar" style="zoom:80%;">
+<img src="https://s1.ax1x.com/2020/04/15/JPx8c8.png" alt="avatar" style="zoom:80%;">
 
 
 
@@ -460,7 +460,11 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">http</a>
+                <a href="javascript:void(0)" class="js-tag color3">安卓</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">移动端</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -472,11 +476,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">安卓</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">移动端</a>
+                <a href="javascript:void(0)" class="js-tag color5">http</a>
               </li>
             
             <div class="clearfix"></div>
