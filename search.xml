@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>lombok插件</title>
+      <link href="/2020/04/19/springboot%E5%88%9D%E6%AC%A1%E4%BD%93%E9%AA%8C/"/>
+      <url>/2020/04/19/springboot%E5%88%9D%E6%AC%A1%E4%BD%93%E9%AA%8C/</url>
+      
+        <content type="html"><![CDATA[<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在最近的实践课作业用到了springboot框架，开发工具是idea</p><p>其中用到了lombok插件，感觉对于提高开发效率有很好的帮助</p><h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>idea环境的话，直接在插件商场下载</p><p><img src="https://s1.ax1x.com/2020/04/19/JMSbEd.png" alt></p><blockquote><p>之后在pom.xml里添加依赖</p></blockquote><pre><code>&lt;dependency&gt;    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;    &lt;artifactId&gt;lombok&lt;/artifactId&gt;    &lt;optional&gt;true&lt;/optional&gt;&lt;/dependency&gt;</code></pre><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>lombok插件的使用是注解形式</p><p><img src="https://s1.ax1x.com/2020/04/19/JM9Tkd.png" alt></p><blockquote><p>在实体类中使用@Data注解后，相当于设置了getter，setter，重写了tostring方法，大大提高开发效率</p></blockquote>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 后端 </tag>
+            
+            <tag> springboot </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>hgame-week3</title>
       <link href="/2020/04/15/hgame-week3/"/>
       <url>/2020/04/15/hgame-week3/</url>
