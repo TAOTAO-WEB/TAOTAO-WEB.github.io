@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="lombok插件, taotao-blog">
+    <meta name="keywords" content="axios实现vue访问后端接口数据, taotao-blog">
     <meta name="description" content>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>lombok插件 | taotao-blog</title>
+    <title>axios实现vue访问后端接口数据 | taotao-blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/2.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">lombok插件</h1>
+                    <h1 class="description center-align post-title">axios实现vue访问后端接口数据</h1>
                 </div>
             </div>
         </div>
@@ -430,12 +430,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/后端/">
-                                <span class="chip bg-color">后端</span>
+                            <a href="/tags/vue/">
+                                <span class="chip bg-color">vue</span>
                             </a>
                         
-                            <a href="/tags/springboot/">
-                                <span class="chip bg-color">springboot</span>
+                            <a href="/tags/前端/">
+                                <span class="chip bg-color">前端</span>
                             </a>
                         
                     </div>
@@ -450,7 +450,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-04-19
+                    2020-04-20
                 </div>
                 
 
@@ -466,22 +466,49 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>在最近的实践课作业用到了springboot框架，开发工具是idea</p>
-<p>其中用到了lombok插件，感觉对于提高开发效率有很好的帮助</p>
-<h3 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h3><p>idea环境的话，直接在插件商场下载</p>
-<p><img src="https://s1.ax1x.com/2020/04/19/JMSbEd.png" alt></p>
-<blockquote>
-<p>之后在pom.xml里添加依赖</p>
-</blockquote>
-<pre><code>&lt;dependency&gt;
-    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
-    &lt;artifactId&gt;lombok&lt;/artifactId&gt;
-    &lt;optional&gt;true&lt;/optional&gt;
-&lt;/dependency&gt;</code></pre><h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><p>lombok插件的使用是注解形式</p>
-<p><img src="https://s1.ax1x.com/2020/04/19/JM9Tkd.png" alt></p>
-<blockquote>
-<p>在实体类中使用@Data注解后，相当于设置了getter，setter，重写了tostring方法，大大提高开发效率</p>
-</blockquote>
+                <p>在实现交互式网站过程中，前端需要去获取后台的数据，在前端vue框架中一般建议使用axios来获取数据。</p>
+<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>在项目里使用前需要先下载，只需要用npm一行命令</p>
+<pre><code>npm install axios</code></pre><p>除此之外为了后期方便处理数据，还建议用qs库，一样需要下载</p>
+<h2 id="相关配置"><a href="#相关配置" class="headerlink" title="相关配置"></a>相关配置</h2><p>在main.js中全局导入,并且配置默认设置</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
+<span class="token keyword">import</span> qs <span class="token keyword">from</span> <span class="token string">'qs'</span>
+
+Vue<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>$axios <span class="token operator">=</span> axios<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//默认访问接口</span>
+axios<span class="token punctuation">.</span>defaults<span class="token punctuation">.</span>baseURL <span class="token operator">=</span> <span class="token string">'http://localhost:8080/'</span><span class="token punctuation">;</span>  
+axios<span class="token punctuation">.</span>defaults<span class="token punctuation">.</span>timeout <span class="token operator">=</span> <span class="token number">10000</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">//发送post请求的Content-Type头部默认内容</span>
+axios<span class="token punctuation">.</span>defaults<span class="token punctuation">.</span>headers<span class="token punctuation">.</span>post<span class="token punctuation">[</span><span class="token string">'Content-Type'</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token string">'application/x-www-form-urlencoded;charset=UTF-8'</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">// 添加请求拦截器</span>
+axios<span class="token punctuation">.</span>interceptors<span class="token punctuation">.</span>request<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>config<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 参数格式转换，处理post请求获取的数据</span>
+  <span class="token keyword">if</span><span class="token punctuation">(</span>config<span class="token punctuation">.</span>method<span class="token operator">===</span><span class="token string">"post"</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+    config<span class="token punctuation">.</span>data <span class="token operator">=</span> qs<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>config<span class="token punctuation">.</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> config<span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token keyword">function</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token comment" spellcheck="true">// 对请求错误做些什么</span>
+  <span class="token keyword">return</span> Promise<span class="token punctuation">.</span><span class="token function">reject</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code></pre>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><p>接下来在某一vue文件中,只需要this.$axios便可以发送请求</p>
+<pre class=" language-javascript"><code class="language-javascript"><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+      <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$axios<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">"user/register"</span><span class="token punctuation">,</span><span class="token punctuation">{</span>
+        name<span class="token punctuation">:</span><span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">,</span>
+        password<span class="token punctuation">:</span><span class="token keyword">this</span><span class="token punctuation">.</span>password<span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>response<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token function">alert</span><span class="token punctuation">(</span>response<span class="token punctuation">.</span>data<span class="token punctuation">.</span>msg<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+        <span class="token punctuation">)</span>
+        <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span><span class="token keyword">function</span> <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>error<span class="token punctuation">.</span>response<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>$router<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span>path<span class="token punctuation">:</span> <span class="token string">'/signin'</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span></code></pre>
 
             </div>
             <hr/>
@@ -507,7 +534,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://yoursite.com/2020/04/19/springboot初次体验/">http://yoursite.com/2020/04/19/springboot初次体验/</a>
+                    <a href="http://yoursite.com/2020/04/20/axios实现访问后台接口/">http://yoursite.com/2020/04/20/axios实现访问后台接口/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -545,12 +572,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/后端/">
-                                    <span class="chip bg-color">后端</span>
+                                <a href="/tags/vue/">
+                                    <span class="chip bg-color">vue</span>
                                 </a>
                             
-                                <a href="/tags/springboot/">
-                                    <span class="chip bg-color">springboot</span>
+                                <a href="/tags/前端/">
+                                    <span class="chip bg-color">前端</span>
                                 </a>
                             
                         </div>
@@ -592,9 +619,10 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
                 <a href="/2020/04/20/axios实现访问后台接口/">
                     <div class="card-image">
@@ -614,9 +642,9 @@ npm install axios除此之外为了后期方便处理数据，还建议用qs库�
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-04-20
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-20
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -625,6 +653,7 @@ npm install axios除此之外为了后期方便处理数据，还建议用qs库�
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
@@ -647,28 +676,31 @@ npm install axios除此之外为了后期方便处理数据，还建议用qs库�
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/04/15/hgame-week3/">
+                <a href="/2020/04/19/springboot初次体验/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/4.jpg" class="responsive-img" alt="hgame-week3">
+                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="lombok插件">
                         
-                        <span class="card-title">hgame-week3</span>
+                        <span class="card-title">lombok插件</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            web序列之争
+                            概述在最近的实践课作业用到了springboot框架，开发工具是idea
+其中用到了lombok插件，感觉对于提高开发效率有很好的帮助
+安装idea环境的话，直接在插件商场下载
 
 
-在检查源代码时发现前端注释中写着source.zip，于是下载压缩包，开始php代码审计。
-从题目序列之争得到暗示，借助搜索引擎发现是考察反序列，关注序列函数发现在moster类中，发现可以在cookie传入monste
+之后在pom.xml里添加依赖
+
+&lt;dependen
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-04-19
                             </span>
                         <span class="publish-author">
                             
@@ -681,8 +713,12 @@ npm install axios除此之外为了后期方便处理数据，还建议用qs库�
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/ctf/">
-                        <span class="chip bg-color">ctf</span>
+                    <a href="/tags/后端/">
+                        <span class="chip bg-color">后端</span>
+                    </a>
+                    
+                    <a href="/tags/springboot/">
+                        <span class="chip bg-color">springboot</span>
                     </a>
                     
                 </div>
