@@ -4,6 +4,27 @@
   
     
     <entry>
+      <title>redis基础命令</title>
+      <link href="/2020/07/20/redis%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/"/>
+      <url>/2020/07/20/redis%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4/</url>
+      
+        <content type="html"><![CDATA[<h2 id="环境"><a href="#环境" class="headerlink" title="环境"></a>环境</h2><blockquote><p>初学redis，对于redis的基础命令进行一下记录</p></blockquote><p>个人是在阿里云服务器上用docker配置环境，docker相对比较方便.. 配置好后一行命令进入redis</p><blockquote><p>docker exec -it myredis redis-cli</p></blockquote><h2 id="命令"><a href="#命令" class="headerlink" title="命令"></a>命令</h2><p>redis支持五种数据类型：string(字符串),list(列表),hash(哈希),set(集合),sorted set(有序集合)</p><p>key-value格式</p><blockquote><p>keys [pattern]根据正则表达式获取键名 keys * 获取所有key</p><p>type 键名 获取键值类型</p><p>del 键名 删除键值</p></blockquote><h3 id="string"><a href="#string" class="headerlink" title="string"></a>string</h3><p>string 类型是二进制安全的。意思是 redis 的 string 可以包含任何数据。比如jpg图片或者序列化的对象。</p><pre><code>127.0.0.1:6379&gt; set 4 5OK127.0.0.1:6379&gt; get 4&quot;5&quot;127.0.0.1:6379&gt; keys *1)&quot;4&quot;</code></pre><h3 id="hash"><a href="#hash" class="headerlink" title="hash"></a>hash</h3><p>适合存储对象</p><p>hget获取对象某个属性值，hgetall获取对象所有信息</p><pre><code>127.0.0.1:6379&gt; hmset hash name kevin age 11OK127.0.0.1:6379&gt; hget hash name&quot;kevin&quot;127.0.0.1:6379&gt; hgetall hash1) &quot;name&quot;2) &quot;kevin&quot;3) &quot;age&quot;4) &quot;11&quot;</code></pre><h3 id="list"><a href="#list" class="headerlink" title="list"></a>list</h3><p>按照插入顺序排序。你可以添加一个元素到列表的左边或者右边</p><pre><code>redis 127.0.0.1:6379&gt; LPUSH demolist redis(integer) 1redis 127.0.0.1:6379&gt; LPUSH demolist mongodb(integer) 2redis 127.0.0.1:6379&gt; LPUSH demolist mysql(integer) 3127.0.0.1:6379&gt; lrange demolist 0 101) &quot;mysql&quot;2) &quot;mongodb&quot;3) &quot;redis&quot;</code></pre><h3 id="set"><a href="#set" class="headerlink" title="set"></a>set</h3><p>Redis 的 Set 是 String 类型的无序集合。集合成员是唯一的，这就意味着集合中不能出现重复的数据。</p><pre><code>redis 127.0.0.1:6379&gt; SADD set redis(integer) 1redis 127.0.0.1:6379&gt; SADD set mongodb(integer) 1redis 127.0.0.1:6379&gt; SADD set mysql(integer) 1redis 127.0.0.1:6379&gt; SADD set mysql(integer) 0redis 127.0.0.1:6379&gt; SMEMBERS set1) &quot;mysql&quot;2) &quot;mongodb&quot;3) &quot;redis&quot;</code></pre><h3 id="sorted-set"><a href="#sorted-set" class="headerlink" title="sorted set"></a>sorted set</h3><p>redis有序集合和集合一样也是string类型元素的集合,且不允许重复的成员。</p><p>不同的是每个元素都会关联一个double类型的分数。redis正是通过分数来为集合中的成员进行从小到大的排序。</p><pre><code>redis 127.0.0.1:6379&gt; ZADD runoobkey 1 redis(integer) 1redis 127.0.0.1:6379&gt; ZADD runoobkey 2 mongodb(integer) 1redis 127.0.0.1:6379&gt; ZRANGE runoobkey 0 10 WITHSCORES1) &quot;redis&quot;2) &quot;1&quot;3) &quot;mongodb&quot;4) &quot;2&quot;</code></pre>]]></content>
+      
+      
+      
+        <tags>
+            
+            <tag> 数据库 </tag>
+            
+            <tag> nosql </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>axios实现vue访问后端接口数据</title>
       <link href="/2020/04/20/axios%E5%AE%9E%E7%8E%B0%E8%AE%BF%E9%97%AE%E5%90%8E%E5%8F%B0%E6%8E%A5%E5%8F%A3/"/>
       <url>/2020/04/20/axios%E5%AE%9E%E7%8E%B0%E8%AE%BF%E9%97%AE%E5%90%8E%E5%8F%B0%E6%8E%A5%E5%8F%A3/</url>
