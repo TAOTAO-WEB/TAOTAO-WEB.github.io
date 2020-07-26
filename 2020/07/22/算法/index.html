@@ -664,6 +664,72 @@ cache.get(4);       // 返回  4</code></pre><blockquote>
         node<span class="token punctuation">.</span>next <span class="token operator">=</span> tail<span class="token punctuation">;</span>
     <span class="token punctuation">}</span>
 <span class="token punctuation">}</span></code></pre>
+<h2 id="Union-Find-算法"><a href="#Union-Find-算法" class="headerlink" title="Union-Find 算法"></a>Union-Find 算法</h2><p>Union-Find 算法，也就是常说的并查集算法，主要是解决图论中「动态连通性」问题</p>
+<p>主要实现以下api</p>
+<pre><code>class UF {
+    /* 将 p 和 q 连接 */
+    public void union(int p, int q);
+    /* 判断 p 和 q 是否连通 */
+    public boolean connected(int p, int q);
+    /* 返回图中有多少个连通分量 */
+    public int count();
+}</code></pre><blockquote>
+<p>用数组来具体实现这个森林。设定树的每个节点有一个指针指向其父节点，如果是根节点的话，这个指针指向自己</p>
+</blockquote>
+<pre class=" language-java"><code class="language-java"><span class="token keyword">class</span> <span class="token class-name">UF</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 连通分量个数</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span> count<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 存储一棵树</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> parent<span class="token punctuation">;</span>
+    <span class="token comment" spellcheck="true">// 记录树的“重量”</span>
+    <span class="token keyword">private</span> <span class="token keyword">int</span><span class="token punctuation">[</span><span class="token punctuation">]</span> size<span class="token punctuation">;</span>
+
+    <span class="token keyword">public</span> <span class="token function">UF</span><span class="token punctuation">(</span><span class="token keyword">int</span> n<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>count <span class="token operator">=</span> n<span class="token punctuation">;</span>
+        parent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        size <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">int</span><span class="token punctuation">[</span>n<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">int</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> n<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            parent<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> i<span class="token punctuation">;</span>
+            size<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">void</span> <span class="token function">union</span><span class="token punctuation">(</span><span class="token keyword">int</span> p<span class="token punctuation">,</span> <span class="token keyword">int</span> q<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> rootP <span class="token operator">=</span> <span class="token function">find</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> rootQ <span class="token operator">=</span> <span class="token function">find</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>rootP <span class="token operator">==</span> rootQ<span class="token punctuation">)</span>
+            <span class="token keyword">return</span><span class="token punctuation">;</span>
+
+        <span class="token comment" spellcheck="true">// 小树接到大树下面，较平衡</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>size<span class="token punctuation">[</span>rootP<span class="token punctuation">]</span> <span class="token operator">></span> size<span class="token punctuation">[</span>rootQ<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            parent<span class="token punctuation">[</span>rootQ<span class="token punctuation">]</span> <span class="token operator">=</span> rootP<span class="token punctuation">;</span>
+            size<span class="token punctuation">[</span>rootP<span class="token punctuation">]</span> <span class="token operator">+=</span> size<span class="token punctuation">[</span>rootQ<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            parent<span class="token punctuation">[</span>rootP<span class="token punctuation">]</span> <span class="token operator">=</span> rootQ<span class="token punctuation">;</span>
+            size<span class="token punctuation">[</span>rootQ<span class="token punctuation">]</span> <span class="token operator">+=</span> size<span class="token punctuation">[</span>rootP<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        count<span class="token operator">--</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">boolean</span> <span class="token function">connected</span><span class="token punctuation">(</span><span class="token keyword">int</span> p<span class="token punctuation">,</span> <span class="token keyword">int</span> q<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">int</span> rootP <span class="token operator">=</span> <span class="token function">find</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">int</span> rootQ <span class="token operator">=</span> <span class="token function">find</span><span class="token punctuation">(</span>q<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">return</span> rootP <span class="token operator">==</span> rootQ<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">private</span> <span class="token keyword">int</span> <span class="token function">find</span><span class="token punctuation">(</span><span class="token keyword">int</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">while</span> <span class="token punctuation">(</span>parent<span class="token punctuation">[</span>x<span class="token punctuation">]</span> <span class="token operator">!=</span> x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 进行路径压缩</span>
+            parent<span class="token punctuation">[</span>x<span class="token punctuation">]</span> <span class="token operator">=</span> parent<span class="token punctuation">[</span>parent<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+            x <span class="token operator">=</span> parent<span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+        <span class="token keyword">return</span> x<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">public</span> <span class="token keyword">int</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> count<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span></code></pre>
 
             </div>
             <hr/>
