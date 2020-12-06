@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="http-ctf, taotao-blog">
+    <meta name="keywords" content="mysql事务并发访问产生的问题和事务隔离机制, taotao-blog">
     <meta name="description" content>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>http-ctf | taotao-blog</title>
+    <title>mysql事务并发访问产生的问题和事务隔离机制 | taotao-blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/16.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">http-ctf</h1>
+                    <h1 class="description center-align post-title">mysql事务并发访问产生的问题和事务隔离机制</h1>
                 </div>
             </div>
         </div>
@@ -430,12 +430,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/ctf/">
-                                <span class="chip bg-color">ctf</span>
+                            <a href="/tags/mysql/">
+                                <span class="chip bg-color">mysql</span>
                             </a>
                         
-                            <a href="/tags/http/">
-                                <span class="chip bg-color">http</span>
+                            <a href="/tags/数据库/">
+                                <span class="chip bg-color">数据库</span>
                             </a>
                         
                     </div>
@@ -450,7 +450,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2019-11-20
+                    2020-12-06
                 </div>
                 
 
@@ -466,68 +466,17 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>在做bugku的web基础题时，对http的内容做了下整理。</p>
-<a id="more"></a>
-
-<h2 id="域名解析"><a href="#域名解析" class="headerlink" title="域名解析"></a>域名解析</h2><img src="https://s1.ax1x.com/2020/04/15/JPvNJx.png" alt="avatar" style="zoom:80%;">
-
-<blockquote>
-<p>域名解析，把 flag.baidu.com解析到123.206.87.240。123.206.87.240是ip地址，flag.baidu.com是域名，看起来就像是平常正常访问的网页的名字。</p>
-</blockquote>
-<blockquote>
-<p>在实际生活中，一个ip可以对应多个域名，不同网页共享一个ip。</p>
-</blockquote>
-<blockquote>
-<p>然后问题就来了，ip相同，http如何区分到底是去哪个域名下的内容？</p>
-<p>这里用到http头部的host字段，在host中加上要访问的域名的名称，对方就知道你想访问的是这个ip下的哪个域名</p>
-</blockquote>
-<blockquote>
-<p>构造:</p>
-<p>host：flag.baidu.com</p>
-</blockquote>
-<img src="https://s1.ax1x.com/2020/04/15/JPv0yD.png" alt="avatar" style="zoom: 80%;">
-
-<blockquote>
-<p>flag就出来了</p>
-</blockquote>
-<h2 id="你从哪里来"><a href="#你从哪里来" class="headerlink" title="你从哪里来"></a>你从哪里来</h2><img src="https://s1.ax1x.com/2020/04/15/JPvBOe.png" alt="avatar" style="zoom:80%;">
-
-<blockquote>
-<p>点进去后看到提示， are you from google? </p>
-<p>你是从谷歌来的吗？</p>
-</blockquote>
-<blockquote>
-<p>在http中有一个字段叫做referer,他携带的内容是该http请求的来源地址，通俗来说就是从哪个链接访问的，该字段经常用于防盗链和防csrf（跨站请求伪造）</p>
-</blockquote>
-<blockquote>
-<p>了解到了这一步，接下来就是构造http头</p>
-<p>referer：<a href="https://www.google.com" target="_blank" rel="noopener">https://www.google.com</a></p>
-</blockquote>
-<img src="https://s1.ax1x.com/2020/04/15/JPvswd.png" alt="avatar" style="zoom:80%;">
-
-<blockquote>
-<p>可以看到，在referer头部加上谷歌的网址，假装你是从谷歌访问的这个网站，flag就出来了。</p>
-</blockquote>
-<h2 id="程序员本地网站"><a href="#程序员本地网站" class="headerlink" title="程序员本地网站"></a>程序员本地网站</h2><img src="https://s1.ax1x.com/2020/04/15/JPvOpV.png" alt="avatar" style="zoom:80%;">
-
-<blockquote>
-<p>点进去网页提示请从本地访问，另外网址中包含localhost, 也是在暗示，localhost是域名，表示的是本地，也就是127.0.0.1本地ip指向的域名。</p>
-</blockquote>
-<blockquote>
-<p>这里要用到的是http协议中的X-Forwarded-For（简称XFF头），他代表请求端的真实ip地址。</p>
-</blockquote>
-<blockquote>
-<p>他的标准格式是 X-Forwarded-For: client1, proxy1, proxy2，…</p>
-</blockquote>
-<blockquote>
-<p>从标准格式可以看出，XFF头信息可以有多个，中间用逗号分隔，其中第一项为真实的客户端ip，后面的则是曾经经过的代理或负载均衡的ip地址，经过几个就会出现几个，如果没有就没有。</p>
-</blockquote>
-<blockquote>
-<p>这道题只需要表示从本地访问，所以只需要构造 X-Forwarded-For: 127.0.0.1就好了，这里不能填localhost因为loaclhost是域名，他对应的ip地址是127.0.0.1，而XFF头携带的是ip地址。</p>
-</blockquote>
-<img src="https://s1.ax1x.com/2020/04/15/JPx8c8.png" alt="avatar" style="zoom:80%;">
-
-
+                <h2 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h2><h3 id="1-read-uncommitted-未提交读"><a href="#1-read-uncommitted-未提交读" class="headerlink" title="1.read uncommitted 未提交读"></a>1.read uncommitted 未提交读</h3><p>事务可以读到其他事务未提交的数据，容易引发脏读</p>
+<p><strong>脏读</strong>：</p>
+<p>读到其他事务未提交的数据，如果另一方事务回滚就会引发错误。</p>
+<h3 id="2-read-committed-提交读"><a href="#2-read-committed-提交读" class="headerlink" title="2.read committed 提交读"></a>2.read committed 提交读</h3><p>事务只能读到其他事务已经提交的数据，但是依然会发生不可重复读</p>
+<p><strong>不可重复读</strong>：</p>
+<p>如果有其他事务在本事务提交前进行修改操作并提交，两次读取数据不同，无法保证数据可靠</p>
+<h3 id="3-repeatable-read-可重复读（innodb默认）"><a href="#3-repeatable-read-可重复读（innodb默认）" class="headerlink" title="3.repeatable read 可重复读（innodb默认）"></a>3.repeatable read 可重复读（innodb默认）</h3><p>事务只会读到该事务开始读到的结果，其他事务提交不会造成影响，两次读到结果相同，但是执行修改操作会是正确按照其他事务过的数据来操作。innodb的可重复读可以避免幻读。</p>
+<p><strong>幻读</strong>：</p>
+<p>一个事务进行删除/增加操作时候，另一个事务进行update操作，使得另一个事务影响的行数比预计多一行/少一行</p>
+<h3 id="4-serializable"><a href="#4-serializable" class="headerlink" title="4.serializable"></a>4.serializable</h3><p> 所有操作都会加锁，最高级别的事务隔离</p>
+<img src="https://s3.ax1x.com/2020/12/06/DjsgRH.png" alt="DjsgRH.png" border="0">
 
 
             </div>
@@ -554,7 +503,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://taotao-web.github.io/2019/11/20/http-ctf/">http://taotao-web.github.io/2019/11/20/http-ctf/</a>
+                    <a href="http://taotao-web.github.io/2020/12/06/mysql事务/">http://taotao-web.github.io/2020/12/06/mysql事务/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -592,12 +541,12 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/ctf/">
-                                    <span class="chip bg-color">ctf</span>
+                                <a href="/tags/mysql/">
+                                    <span class="chip bg-color">mysql</span>
                                 </a>
                             
-                                <a href="/tags/http/">
-                                    <span class="chip bg-color">http</span>
+                                <a href="/tags/数据库/">
+                                    <span class="chip bg-color">数据库</span>
                                 </a>
                             
                         </div>
@@ -639,38 +588,33 @@
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/01/25/hgame-week1/">
+                <a href="/2020/12/06/mysql事务/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/0.jpg" class="responsive-img" alt="hgame_week1">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="mysql事务并发访问产生的问题和事务隔离机制">
                         
-                        <span class="card-title">hgame_week1</span>
+                        <span class="card-title">mysql事务并发访问产生的问题和事务隔离机制</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            学校的新生赛ctf，自己做了下wp
-
-
-webcosmos的博客
-这是一个文件泄露的题目，出题人暗示用了git，用了git以后会生成一个.git文件，在这个文件夹中的config文件里存放了github的url地址
-
-
-
-
-根据url找到g
+                            事务隔离级别1.read uncommitted 未提交读事务可以读到其他事务未提交的数据，容易引发脏读
+脏读：
+读到其他事务未提交的数据，如果另一方事务回滚就会引发错误。
+2.read committed 提交读事务只能读到其他事务已经提
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-01-25
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -679,11 +623,16 @@ webcosmos的博客
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/ctf/">
-                        <span class="chip bg-color">ctf</span>
+                    <a href="/tags/mysql/">
+                        <span class="chip bg-color">mysql</span>
+                    </a>
+                    
+                    <a href="/tags/数据库/">
+                        <span class="chip bg-color">数据库</span>
                     </a>
                     
                 </div>
@@ -697,28 +646,29 @@ webcosmos的博客
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/11/15/安卓/">
+                <a href="/2020/12/06/mysql锁/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="使用glide时遇到的问题">
+                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="mysql锁-myisam与innodb">
                         
-                        <span class="card-title">使用glide时遇到的问题</span>
+                        <span class="card-title">mysql锁-myisam与innodb</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
                             
-今天在做android开发时遇到了点问题，在添加依赖时，用到了
+共享锁（读锁 select操作），排他锁（写锁，更新操作）
+在加上写锁时，无法进行读写操作，加上读锁时，可以进行读操作但是不能进行写操作
 
-implementation &#39;com.github.bumptech.glide:glide:4.10.0&#39;
-结果在build的时候疯狂报错，找到erro
+myisam默认表级锁，不支持行级锁
+只要对表中某个范围数据进行写操作，其他范围也无法进行读写操作
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2019-11-15
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-06
                             </span>
                         <span class="publish-author">
                             
@@ -731,12 +681,12 @@ implementation &#39;com.github.bumptech.glide:glide:4.10.0&#39;
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/安卓/">
-                        <span class="chip bg-color">安卓</span>
+                    <a href="/tags/mysql/">
+                        <span class="chip bg-color">mysql</span>
                     </a>
                     
-                    <a href="/tags/移动端/">
-                        <span class="chip bg-color">移动端</span>
+                    <a href="/tags/数据库/">
+                        <span class="chip bg-color">数据库</span>
                     </a>
                     
                 </div>
