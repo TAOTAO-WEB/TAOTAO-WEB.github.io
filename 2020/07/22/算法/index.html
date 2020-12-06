@@ -484,7 +484,25 @@
         <span class="token punctuation">}</span>
         <span class="token keyword">return</span> curmax<span class="token punctuation">;</span>
     <span class="token punctuation">}</span></code></pre>
-<h2 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h2><p>回溯算法有固定的模板，回溯相当于是复杂的暴力穷举.</p>
+<h3 id="子序列问题模板"><a href="#子序列问题模板" class="headerlink" title="子序列问题模板"></a>子序列问题模板</h3><p>子序列是不一定连续的数组内容</p>
+<pre><code>int n = array.length;
+int[] dp = new int[n];
+
+for (int i = 1; i &lt; n; i++) {
+    for (int j = 0; j &lt; i; j++) {
+        dp[i] = 最值(dp[i], dp[j] + ...)
+    }
+}</code></pre><pre><code>int n = arr.length;
+int[][] dp = new int[n][n];
+
+for (int i = 0; i &lt; n; i++) {
+    for (int j = 0; j &lt; n; j++) {
+        if (arr[i] == arr[j]) 
+            dp[i][j] = dp[i][j] + ...
+        else
+            dp[i][j] = 最值(...)
+    }
+}</code></pre><h2 id="回溯算法"><a href="#回溯算法" class="headerlink" title="回溯算法"></a>回溯算法</h2><p>回溯算法有固定的模板，回溯相当于是复杂的暴力穷举.</p>
 <p>最简单的例子是123有多少种排序，第一步固定首位是1，后面选择2，第三位是3；或者第二位是3第三位是2；然后回头重新选择第一位。</p>
 <p><strong>例题：</strong></p>
 <p><a href="https://leetcode-cn.com/problems/permutations/" target="_blank" rel="noopener">全排列</a></p>
@@ -836,34 +854,30 @@ cache.get(4);       // 返回  4</code></pre><blockquote>
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="far fa-dot-circle"></i>&nbsp;本篇
-            </div>
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/07/22/算法/">
+                <a href="/2020/12/06/redis持久化与查询以及异步队列实现/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="算法小记">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="redis持久化与查询以及异步队列和分布式锁实现">
                         
-                        <span class="card-title">算法小记</span>
+                        <span class="card-title">redis持久化与查询以及异步队列和分布式锁实现</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            动态规划问题动态规划问题可以视作为带备忘录的暴力迭代，这类问题存在重叠子问题，动态规划问题一定具有最优子结构，通过子问题的最值得出原问题的最值。要符合「最优子结构」，子问题间必须互相独立。
-
-只有列出正确的状态转换方程才能正确的穷举
-
-例题
+                            redis查询数据keys [pattern]KEYS * 匹配数据库中所有key
+小量数据还好，但是keys [pattern]如果遇到大量数据会对服务器造成不小负担，这个命令会逐条打印，一次性返回所有匹配值，没有限制大小，一次性打印几w
                         
                     </div>
                     <div class="publish-info">
-                            <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-22
-                            </span>
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-12-06
+                        </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -872,12 +886,15 @@ cache.get(4);       // 返回  4</code></pre><blockquote>
                         </span>
                     </div>
                 </div>
-
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/算法/">
-                        <span class="chip bg-color">算法</span>
+                    <a href="/tags/数据库/">
+                        <span class="chip bg-color">数据库</span>
+                    </a>
+                    
+                    <a href="/tags/nosql/">
+                        <span class="chip bg-color">nosql</span>
                     </a>
                     
                 </div>

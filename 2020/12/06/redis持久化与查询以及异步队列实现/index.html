@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="hgame_week1, taotao-blog">
+    <meta name="keywords" content="redis持久化与查询以及异步队列和分布式锁实现, taotao-blog">
     <meta name="description" content>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>hgame_week1 | taotao-blog</title>
+    <title>redis持久化与查询以及异步队列和分布式锁实现 | taotao-blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/0.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">hgame_week1</h1>
+                    <h1 class="description center-align post-title">redis持久化与查询以及异步队列和分布式锁实现</h1>
                 </div>
             </div>
         </div>
@@ -430,8 +430,12 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/ctf/">
-                                <span class="chip bg-color">ctf</span>
+                            <a href="/tags/数据库/">
+                                <span class="chip bg-color">数据库</span>
+                            </a>
+                        
+                            <a href="/tags/nosql/">
+                                <span class="chip bg-color">nosql</span>
                             </a>
                         
                     </div>
@@ -446,7 +450,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-01-25
+                    2020-12-06
                 </div>
                 
 
@@ -462,168 +466,55 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <p>学校的新生赛ctf，自己做了下wp</p>
-<a id="more"></a>
-
-<h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h2 id="cosmos的博客"><a href="#cosmos的博客" class="headerlink" title="cosmos的博客"></a>cosmos的博客</h2><blockquote>
-<p>这是一个文件泄露的题目，出题人暗示用了git，用了git以后会生成一个.git文件，在这个文件夹中的config文件里存放了github的url地址</p>
-</blockquote>
-<img src="https://s1.ax1x.com/2020/04/15/JPXA1S.png" alt="1579670922512" style="zoom: 80%;">
-
+                <h2 id="redis查询数据"><a href="#redis查询数据" class="headerlink" title="redis查询数据"></a>redis查询数据</h2><h3 id="keys-pattern"><a href="#keys-pattern" class="headerlink" title="keys [pattern]"></a>keys [pattern]</h3><p>KEYS * 匹配数据库中所有key</p>
+<p>小量数据还好，但是keys [pattern]如果遇到大量数据会对服务器造成不小负担，这个命令会逐条打印，一次性返回所有匹配值，没有限制大小，一次性打印几w数据看起来会很头疼，一般prod环境都会禁用。</p>
+<h3 id="SCAN-cursor-pattern-count"><a href="#SCAN-cursor-pattern-count" class="headerlink" title="SCAN cursor [pattern] count"></a>SCAN cursor [pattern] count</h3><p>每次都会返回少量数据，可用于prod环境。cursor为游标，第一次为0，后面迭代会依赖前面返回的游标，当游标重新返回0的时候说明迭代结束。</p>
+<p>每次返回数据不会严格按照count的数量，游标也有可能在上次返回的前面（也就是数据可能会有重复），需要把数据放入set去重。</p>
+<p><a href="https://imgchr.com/i/DXZxi9" target="_blank" rel="noopener"><img src="https://s3.ax1x.com/2020/12/06/DXZxi9.png" alt="DXZxi9.png"></a></p>
+<h2 id="redis分布式锁"><a href="#redis分布式锁" class="headerlink" title="redis分布式锁"></a>redis分布式锁</h2><p>可以利用redis键值有效时常来设置分布式锁</p>
 <blockquote>
-<p>根据url找到github上的仓库，在init区域找到base64编码后的flag文件，解码后即可得到flag</p>
+<p>set key value 【EX seconds】【PX milliseseconds】【nx】【xx】</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/04/15/JPXwh6.png" alt="1579671239035"></p>
-<h2 id="接头霸王"><a href="#接头霸王" class="headerlink" title="接头霸王"></a>接头霸王</h2><blockquote>
-<p>这是一道考察http头部的题目，根据要求，构造http请求头部,并且试用post请求</p>
-<p>使用hackbar构造</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/04/15/JPXrcD.png" alt="1579671785694"></p>
-<h2 id="code-world"><a href="#code-world" class="headerlink" title="code world"></a>code world</h2><blockquote>
-<p>一进去是显示403，查看源代码后发现是302跳转的问题，直接访问index.php也访问不了。网上查询了一下之后，尝试了一下post请求访问index，意外访问成功…</p>
-<p>进入index之后显示是要通过url传参，解决一下url编码问题，构造a=3%2b7</p>
-</blockquote>
-<h2 id="cxk打篮球"><a href="#cxk打篮球" class="headerlink" title="cxk打篮球"></a>cxk打篮球</h2><blockquote>
-<p>查看了下网页源代码，感觉像是和前端漏洞有关，后面用bp抓包，发现直接改分数，然后send过去，flag就出来了…虽然出题人本意好像不是如此（滑稽</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/04/15/JPXcBd.png" alt="1579672873544"></p>
-<h2 id="misc"><a href="#misc" class="headerlink" title="misc"></a>misc</h2><h2 id="欢迎参加hgame"><a href="#欢迎参加hgame" class="headerlink" title="欢迎参加hgame"></a>欢迎参加hgame</h2><blockquote>
-<p>签到题，题目给了一串编码，base64解码后发现是摩斯密码，对照表即可得出flag</p>
-</blockquote>
-<h2 id="壁纸"><a href="#壁纸" class="headerlink" title="壁纸"></a>壁纸</h2><blockquote>
-<p>题目下载解压后是一张图片，notepade++打开后，发现有地方写着flag.txt，于是怀疑藏了压缩包，把后缀名改成zip后成功打开，密码是图片的p站id，在网上找了个上传p站图片显示id的网站成功拿到密码，打开压缩包里的flag.txt，发现是/u开头的编码，但是后面只有两位16进制数，在百度上找到Unicode字符列表，一一对应得出flag</p>
-</blockquote>
-<h2 id="克鲁苏神话"><a href="#克鲁苏神话" class="headerlink" title="克鲁苏神话"></a>克鲁苏神话</h2><blockquote>
-<p>一开始看hint要用到7zip以为是伪加密，用winhex打开发现并不是，然后查了下压缩包在ctf中的加密，发现一种明文攻击方式。外面和压缩包里都有bacon.txt，而且crc32值也一样，采用的是同一种加密方法，7zip是用在给外面的bacon.txt文件压缩，因为明文攻击需要采用同一种压缩方式，之后用工具archpr明文攻击，得到解压缩后的文件。</p>
-<p>文件里一个word一个bacon.txt，word打开需要密码，于是自然想到密码藏在bacon.txt里。一开始没有注意到文件名是培根的意思，思索了很久，后来发现是培根密码，大写字母为b小写字母为a，解密后得出word密码。打开word后没有看到flag，百度了下word在ctf中的隐写，把显示中设置为隐藏文字，flag就出现了</p>
-</blockquote>
-<h2 id="签到题proplus"><a href="#签到题proplus" class="headerlink" title="签到题proplus"></a>签到题proplus</h2><blockquote>
-<p>这题考的是各种编码还有栅栏与凯撒加密</p>
-<p>根据password.txt里的提示，是先进行分为3组的栅栏加密再进行左移5位的凯撒加密，因为一开始不知道网上有现成的解密网站，自己用py写了个凯撒解密… 栅栏再操作下，跑出英文句子与密码</p>
-</blockquote>
-<pre><code>def kaisa(str):    
-    word = &#39;&#39;    
-    if str.isalpha():            
-        if str.isupper():            
-            word = chr((ord(str) - 65 - 5 + 26) % 26 + 65)        
-        else:            
-            word = chr((ord(str) - 97 - 5 + 26) % 26 + 97)    
-    else:        
-        word = str    
-        return word
-
-def main():
-    with open(&#39;Password.txt&#39;, &#39;r&#39;, encoding=&#39;utf-8&#39;) as f:
-        str_line = f.readline()
-        first = str_line[0:50]
-        sec = str_line[51:101]
-        thir = str_line[102:152]
-        word = []
-        for i in range(0, 50):
-            one = kaisa(first[i])
-            two = kaisa(sec[i])
-            three = kaisa(thir[i])
-            word.append(one + two + three)
-            print(word[i], end=&quot;&quot;)
-
-    print()
-
-    psd = &#39;EMAQETAUQMPVBHVD&#39;
-    f = &#39;EMAQET&#39;
-    s = &#39;AUQMP&#39;
-    t = &#39;VBHVD&#39;
-    rs = &#39;&#39;
-    for i in range(5):
-        rs += f[i] + s[i] + t[i]
-    rs += &#39;T&#39;
-    print(rs)
-
-
-if __name__ == &#39;__main__&#39;:
-    main()
-</code></pre><p><img src="https://s1.ax1x.com/2020/04/15/JPX538.png" alt="1579679219840"></p>
+<p>ex为过期时间 单位为秒，px单位为毫秒</p>
+<p>nx只有键不存在才进行操作 xx只有键存在才进行操作</p>
+<p>创建成功返回OK</p>
 <blockquote>
-<p>解压后打开OK.txt，发现是ook编码，直接用在线工具解密，解密后得出base32编码；再用工具解密base32，解密得出看到最后两个等号，感觉是base64，直接解密发现不行出现乱码，但是最上面显示png三个字母，于是感觉应该是解密出一张图片；最终找到一个base64转图片的网站，解密出一个二维码，扫码得出flag</p>
+<p>在代码中设置有时效的键值，如果键不存在则创建成功，说明该部分逻辑可以执行，否则说明键值存在，该部分被占用</p>
 </blockquote>
-<h2 id="每日推荐"><a href="#每日推荐" class="headerlink" title="每日推荐"></a>每日推荐</h2><blockquote>
-<p>题目下载解压后是一个pcapng文件，查询后得知用wireshark打开，发现是一大堆流量包；考虑到http中用post传送比较重要的文件，于是就过滤一下看看有没有压缩包之类的，然后就发现可疑的地方</p>
-</blockquote>
-<p><img src="https://s1.ax1x.com/2020/04/15/JPXbHs.png" alt="1579680353132"></p>
+<p>在实际当中，键值过期时间需要通过压测来进行确认</p>
 <blockquote>
-<p>追踪http流后发现这个php文件里可能藏了一个zip，就在导出对象：http中导出了这个文件。</p>
-<p>一开始我直接把文件后缀改成zip，也能正常打开，提示密码六位数字，直接选择密码爆破；但是用工具爆破密码时却说这个不是zip文件，然后我用winhex打开发现开头不是50 4B 03 04，而是在后面一点；就用notepade++打开，把上面的部分和最后面不属于zip文件的部分给删掉，然后再用工具爆破就成功了。</p>
+<p>为了防止缓存击穿（大量键值同时失效，对服务器造成负担），过期时间会加上一个随机值</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/04/15/JPXX40.png" alt="1579680869618"></p>
+<h2 id="redis异步队列"><a href="#redis异步队列" class="headerlink" title="redis异步队列"></a>redis异步队列</h2><blockquote>
+<p>blpop/brpop key timout 阻塞直到队列有消息执行lpush/rpush或者超时 </p>
+</blockquote>
+<p>属于点对点，只有给一个消费者</p>
 <blockquote>
-<p>解压缩之后是一个mp3文件，百度了一下音频隐写，用audacity打开音频，换成频谱图之后，就出现了flag</p>
+<p>pub/sub 主题订阅模式 publish 【信息名】【信息】  subscribe 【信息名】</p>
 </blockquote>
-<p><img src="https://s1.ax1x.com/2020/04/15/JPXzgU.png" alt="1579681081249"></p>
-<h2 id="crypto"><a href="#crypto" class="headerlink" title="crypto"></a>crypto</h2><h2 id="infantRSA"><a href="#infantRSA" class="headerlink" title="infantRSA"></a>infantRSA</h2><blockquote>
-<p>根据题目名字的提示，百度RSA加密，然后观察题目py的加密脚本，根据RSA写出解密脚本</p>
+<p>publish发布，subscribe订阅，</p>
+<p>消息是无状态的，无法保证可达，对于生产者是即发即失，这个问题一般还是使用专业消息队列如kafka</p>
+<h2 id="redis持久化"><a href="#redis持久化" class="headerlink" title="redis持久化"></a>redis持久化</h2><blockquote>
+<p>redis作为内存数据库，一旦重启数据就会丢失，redis4.0之后默认配置为rdb做全量备份，aof做增量备份</p>
+<p>aof-use-rdb-preamble yes</p>
 </blockquote>
-<pre><code>def main():    
-    num = 275698465082361070145173688411496311542172902608559859019841    
-    p = 681782737450022065655472455411    
-    q = 675274897132088253519831953441    
-    e = 13    
-    k = (p - 1) * (q - 1)    
-    i = 1    
-    while (k * i + 1) % e != 0:        
-        i += 1    
-    rs = (k * i + 1) // 13   
-    rs = pow(num, rs, p*q)    
-    print(rs)    
-    b = int.to_bytes(rs, 25, byteorder=&#39;big&#39;)    
-    print(b.decode())
-if __name__ == &#39;__main__&#39;:    
-    main()</code></pre><p><img src="https://s1.ax1x.com/2020/04/15/JPj9u4.png" alt="1579681630951"></p>
-<h2 id="Affine"><a href="#Affine" class="headerlink" title="Affine"></a>Affine</h2><blockquote>
-<p>看懂py的加密方式后，写出对应的解密脚本</p>
-<p>另外关于A，B两个数，因为flag前面几位是hgame开头，我是根据这个联立方程求出A，B的值…</p>
+<h3 id="rdb-快照"><a href="#rdb-快照" class="headerlink" title="rdb(快照)"></a>rdb(快照)</h3><p><strong>save</strong>保存redis快照文件</p>
+<p>save会阻塞进程 所以一般使用<strong>bgsave</strong>，会fork一个进程， 之后就会在redis备份目录生成dump.rdb</p>
+<p>恢复数据只需要把dump.rdb文件mv到安装目录并且启动即可</p>
+<p>在redis.config中配置<strong>save</strong>命令</p>
+<blockquote>
+<p>文件小，恢复快，无法保存近一次快照后的数据</p>
 </blockquote>
-<pre><code>TABLE = &#39;zxcvbnmasdfghjklqwertyuiop1234567890QWERTYUIOPASDFGHJKLZXCVBNM&#39;
-def co(num):    
-    i = 0    
-    rs = TABLE.find(num) + 62 * i - 14    
-    while rs % 13 != 0:        
-        i += 1        
-        rs = TABLE.find(num) + 62 * i - 14    
-    rs = rs // 13    
-    return rs
-def maim():    
-    MOD = len(TABLE)    
-    flag = &#39;A8I5z{xr1A_J7ha_vG_TpH410}&#39;    
-    print(MOD)    
-    rs = &#39;&#39;    
-    for i in flag:        
-        if i not in TABLE:            
-            rs += i        
-        else:            
-            num = co(i)            
-            rs += TABLE[num]    
-            print(rs)
-if __name__ == &#39;__main__&#39;:    
-    maim()</code></pre><p><img src="https://s1.ax1x.com/2020/04/15/JPjVC6.png" alt="1579681922159"></p>
-<h2 id="reorder"><a href="#reorder" class="headerlink" title="reorder"></a>reorder</h2><blockquote>
-<p>根据nc 47.98.192.231 25002 ，尝试了下发下是对输入进行重新排序，直接回车会出现乱序flag；并且重新打开后，重新排序方式是不一样的；关键在于，乱序方式和之前对输入的重新排序一样，于是只要输入和flag相同长度的一串字符串，观察排序方式即可排序出正常 的flag。写了个脚本帮忙排序如下</p>
+<h3 id="aof（append-only-file）持久化：保存写状态"><a href="#aof（append-only-file）持久化：保存写状态" class="headerlink" title="aof（append-only-file）持久化：保存写状态"></a>aof（append-only-file）持久化：保存写状态</h3><p>在redis.conf文件中修改<strong>appendonly</strong>为yes</p>
+<p>重启之后会生成<strong>appendonly.aof</strong></p>
+<p>保存的是每个redis命令</p>
+<blockquote>
+<p>bgrewriteaof 用于创建当前aof文件的体积优化版，因为aof会保存所有操作，所以需要优化 </p>
 </blockquote>
-<pre><code>def main():
-    str_1 = &#39;1234567890qwertyuiopasdfghjklzxc&#39; # 输入flag等长字符串
-    rs_1 = &#39;9y642ter80531wq7gcspixlzfhaoukjd&#39;  # 输出
-
-    str_rs = &#39;$L{mgpImUteah5+jA}me_!n!TTRP30iu&#39; # 乱序flag
-    rs = [0]*32
-    for i in range(len(str_1)):
-        num = rs_1.find(str_1[i])
-        rs[i] = str_rs[num]
-
-    for i in rs:
-        print(i, end=&#39;&#39;)
-
-
-if __name__ == &#39;__main__&#39;:
-    main()
-</code></pre><p><img src="https://s1.ax1x.com/2020/04/15/JPjmvD.png" alt="1579683110283"></p>
+<p>恢复数据与rdb一样，将生成的aof文件移动到安装目录，并且重启即可</p>
+<blockquote>
+<p>文件大，恢复慢，适合保存增量数据</p>
+</blockquote>
 
             </div>
             <hr/>
@@ -649,7 +540,7 @@ if __name__ == &#39;__main__&#39;:
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://taotao-web.github.io/2020/01/25/hgame-week1/">http://taotao-web.github.io/2020/01/25/hgame-week1/</a>
+                    <a href="http://taotao-web.github.io/2020/12/06/redis持久化与查询以及异步队列实现/">http://taotao-web.github.io/2020/12/06/redis持久化与查询以及异步队列实现/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -687,8 +578,12 @@ if __name__ == &#39;__main__&#39;:
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/ctf/">
-                                    <span class="chip bg-color">ctf</span>
+                                <a href="/tags/数据库/">
+                                    <span class="chip bg-color">数据库</span>
+                                </a>
+                            
+                                <a href="/tags/nosql/">
+                                    <span class="chip bg-color">nosql</span>
                                 </a>
                             
                         </div>
@@ -730,32 +625,31 @@ if __name__ == &#39;__main__&#39;:
 <article id="prenext-posts" class="prev-next articles">
     <div class="row article-row">
         
-        <div class="article col s12 m6" data-aos="fade-up">
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
             <div class="article-badge left-badge text-color">
-                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+                <i class="far fa-dot-circle"></i>&nbsp;本篇
+            </div>
             <div class="card">
-                <a href="/2020/04/15/hgame-week2/">
+                <a href="/2020/12/06/redis持久化与查询以及异步队列实现/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/3.jpg" class="responsive-img" alt="hgame-week2">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="redis持久化与查询以及异步队列和分布式锁实现">
                         
-                        <span class="card-title">hgame-week2</span>
+                        <span class="card-title">redis持久化与查询以及异步队列和分布式锁实现</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            webcosmos的博客后台
-
-
-查看网页源代码没有什么收获，尝试伪协议读源码，构造 http://cosmos-admin.hgame.day-day.work/index.php?action=php://filter/read=con
+                            redis查询数据keys [pattern]KEYS * 匹配数据库中所有key
+小量数据还好，但是keys [pattern]如果遇到大量数据会对服务器造成不小负担，这个命令会逐条打印，一次性返回所有匹配值，没有限制大小，一次性打印几w
                         
                     </div>
                     <div class="publish-info">
-                        <span class="publish-date">
-                            <i class="far fa-clock fa-fw icon-date"></i>2020-04-15
-                        </span>
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-12-06
+                            </span>
                         <span class="publish-author">
                             
                             <i class="fas fa-user fa-fw"></i>
@@ -764,11 +658,16 @@ if __name__ == &#39;__main__&#39;:
                         </span>
                     </div>
                 </div>
+
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/ctf/">
-                        <span class="chip bg-color">ctf</span>
+                    <a href="/tags/数据库/">
+                        <span class="chip bg-color">数据库</span>
+                    </a>
+                    
+                    <a href="/tags/nosql/">
+                        <span class="chip bg-color">nosql</span>
                     </a>
                     
                 </div>
@@ -782,30 +681,28 @@ if __name__ == &#39;__main__&#39;:
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2019/11/20/http-ctf/">
+                <a href="/2020/07/22/算法/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/16.jpg" class="responsive-img" alt="http-ctf">
+                        <img src="/medias/featureimages/15.jpg" class="responsive-img" alt="算法小记">
                         
-                        <span class="card-title">http-ctf</span>
+                        <span class="card-title">算法小记</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            在做bugku的web基础题时，对http的内容做了下整理。
+                            动态规划问题动态规划问题可以视作为带备忘录的暴力迭代，这类问题存在重叠子问题，动态规划问题一定具有最优子结构，通过子问题的最值得出原问题的最值。要符合「最优子结构」，子问题间必须互相独立。
 
+只有列出正确的状态转换方程才能正确的穷举
 
-域名解析
-
-
-域名解析，把 flag.baidu.com解析到123.206.87.240。123.206.87.240是ip地址，flag.baidu.com是域名，看起来
+例题
                         
                     </div>
                     <div class="publish-info">
                             <span class="publish-date">
-                                <i class="far fa-clock fa-fw icon-date"></i>2019-11-20
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-07-22
                             </span>
                         <span class="publish-author">
                             
@@ -818,12 +715,8 @@ if __name__ == &#39;__main__&#39;:
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/http/">
-                        <span class="chip bg-color">http</span>
-                    </a>
-                    
-                    <a href="/tags/ctf/">
-                        <span class="chip bg-color">ctf</span>
+                    <a href="/tags/算法/">
+                        <span class="chip bg-color">算法</span>
                     </a>
                     
                 </div>
