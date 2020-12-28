@@ -4,7 +4,7 @@
 
 <head><meta name="generator" content="Hexo 3.9.0">
     <meta charset="utf-8">
-    <meta name="keywords" content="mysql事务并发访问产生的问题和事务隔离机制, taotao-blog">
+    <meta name="keywords" content="java常用类库, taotao-blog">
     <meta name="description" content>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
@@ -16,7 +16,7 @@
     <!-- Global site tag (gtag.js) - Google Analytics -->
 
 
-    <title>mysql事务并发访问产生的问题和事务隔离机制 | taotao-blog</title>
+    <title>java常用类库 | taotao-blog</title>
     <link rel="icon" type="image/png" href="/favicon.png">
 
     <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
@@ -308,12 +308,12 @@
 
 
 
-<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/9.jpg')">
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/18.jpg')">
     <div class="container" style="right: 0px;left: 0px;">
         <div class="row">
             <div class="col s12 m12 l12">
                 <div class="brand">
-                    <h1 class="description center-align post-title">mysql事务并发访问产生的问题和事务隔离机制</h1>
+                    <h1 class="description center-align post-title">java常用类库</h1>
                 </div>
             </div>
         </div>
@@ -430,12 +430,8 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/mysql/">
-                                <span class="chip bg-color">mysql</span>
-                            </a>
-                        
-                            <a href="/tags/数据库/">
-                                <span class="chip bg-color">数据库</span>
+                            <a href="/tags/java/">
+                                <span class="chip bg-color">java</span>
                             </a>
                         
                     </div>
@@ -450,7 +446,7 @@
                 
                 <div class="post-date info-break-policy">
                     <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
-                    2020-12-06
+                    2020-12-15
                 </div>
                 
 
@@ -466,19 +462,107 @@
         <hr class="clearfix">
         <div class="card-content article-card-content">
             <div id="articleContent">
-                <h2 id="事务隔离级别"><a href="#事务隔离级别" class="headerlink" title="事务隔离级别"></a>事务隔离级别</h2><h3 id="1-read-uncommitted-未提交读"><a href="#1-read-uncommitted-未提交读" class="headerlink" title="1.read uncommitted 未提交读"></a>1.read uncommitted 未提交读</h3><p>事务可以读到其他事务未提交的数据，容易引发脏读</p>
-<p><strong>脏读</strong>：</p>
-<p>读到其他事务未提交的数据，如果另一方事务回滚就会引发错误。</p>
-<h3 id="2-read-committed-提交读"><a href="#2-read-committed-提交读" class="headerlink" title="2.read committed 提交读"></a>2.read committed 提交读</h3><p>事务只能读到其他事务已经提交的数据，但是依然会发生不可重复读</p>
-<p><strong>不可重复读</strong>：</p>
-<p>如果有其他事务在本事务提交前进行修改操作并提交，两次读取数据不同，无法保证数据可靠</p>
-<h3 id="3-repeatable-read-可重复读（innodb默认）"><a href="#3-repeatable-read-可重复读（innodb默认）" class="headerlink" title="3.repeatable read 可重复读（innodb默认）"></a>3.repeatable read 可重复读（innodb默认）</h3><p>事务只会读到该事务开始读到的结果，其他事务提交不会造成影响，两次读到结果相同，但是执行修改操作会是正确按照其他事务过的数据来操作。innodb的可重复读可以避免幻读。</p>
-<p><strong>幻读</strong>：</p>
-<p>一个事务进行删除/增加操作时候，另一个事务进行update操作，使得另一个事务影响的行数比预计多一行/少一行</p>
-<h3 id="4-serializable"><a href="#4-serializable" class="headerlink" title="4.serializable"></a>4.serializable</h3><p> 所有操作都会加锁，最高级别的事务隔离</p>
-<img src="https://s3.ax1x.com/2020/12/06/DjsgRH.png" alt="DjsgRH.png" border="0">
+                <h2 id="Collection"><a href="#Collection" class="headerlink" title="Collection"></a>Collection</h2><h3 id="list和set"><a href="#list和set" class="headerlink" title="list和set"></a>list和set</h3><img src="https://s3.ax1x.com/2020/12/17/r3pk24.png" alt="r3pk24.png" border="0">
+
+<h3 id="concurrentHashMap"><a href="#concurrentHashMap" class="headerlink" title="concurrentHashMap"></a>concurrentHashMap</h3><blockquote>
+<p>1.8之前采用segement，一个数组中包含多个数组分别加锁，每个segement存储的是数组和链表</p>
+</blockquote>
+<img src="https://s3.ax1x.com/2020/12/21/rBtfQe.png" alt="rBtfQe.png" border="0">
+
+<blockquote>
+<p>1.8之后采取的是和hashmap一样的散列表+链表+红黑树</p>
+</blockquote>
+<p>不允许null用作键或值</p>
+<p>采用的同步方法为锁+CAS</p>
+<p><strong>CAS算法：</strong>全称Compare and swap，字面意思:”比较并交换“</p>
+<pre><code>我们假设内存中的原数据V，旧的预期值A，需要修改的新值B。
+
+比较 A 与 V 是否相等。（比较）//若已经有其他线程操作过，则已经与原来的值不同
+如果比较相等，将 B 写入 V。否则什么都不做（交换）
+返回操作是否成功。
+
+当多个线程尝试使用CAS同时更新同一个变量的时候，只有其中一个线程能够更新变量的值。当其他线程失败后，不会像获取锁一样被挂起，而是可以再次尝试，或者不进行任何操作，这种灵活性就大大减少了锁活跃性风险。</code></pre><p><strong>put方法的逻辑</strong></p>
+<pre><code>1.判断Node[]数组是否初始化，没有则进行初始化操作
+2.通过hash定位数组的索引坐标，是否有Node节点，如果没有则使
+用CAS进行添加（链表的头节点）,添加失败则进入下次循环。
+3.检查到内部正在扩容，就帮助它一块扩容。
+4.如果f!=null,则使用synchronized锁住f元素（链表/红黑二叉树的
+头元素）
+4.1如果是Node(链表结构）则执行链表的添加操作。
+4.2如果是TreeNode(树型结构）则执行树添加操作。
+5.判断链表长度已经达到临界值8,当然这个8是默认值，当节点数超过这个值就需要把链表转换为树结构。
+
+concurrentHashMap和hashtable一样是线程安全的，hashtable底层是数组加链表，而hashmap是线程不安全，底层是数组，链表，红黑树</code></pre><h3 id="HashMap"><a href="#HashMap" class="headerlink" title="HashMap"></a>HashMap</h3><p><strong>hashmap的存储方式</strong>为数组加链表加红黑树，当hash值冲突的时候，便为把冲突node与那个hash值数组位置的node组成链表，当链表长度达到一定条件（长度为<strong>8</strong>并且数组长度达到<strong>64</strong>），便会转换为红黑树，否则单纯只是数组扩容。</p>
+<img src="https://s3.ax1x.com/2020/12/28/roqbwT.md.png" border="0">
+
+<p><img src="https://s3.ax1x.com/2020/12/28/rTP8l8.png" alt="rTP8l8.png"></p>
+<p><img src="https://s3.ax1x.com/2020/12/28/rTiEhq.md.png" alt="rTiEhq.md.png"></p>
+<p><img src="https://s3.ax1x.com/2020/12/28/rTiyCt.png" alt="rTiyCt.png"></p>
+<p>其中Node数组只有在调用put方法的时候才会加载，初始化hashmap的时候是不会加载的，初始大小为<strong>16</strong></p>
+<img src="https://s3.ax1x.com/2020/12/28/roX2TK.md.png" border="0">
+
+<p><strong>数组扩容：</strong>默认<strong>loadFactor</strong>扩容阀值（装载因子）为<strong>0.75</strong>，默认情况下当数组中占用数组空间16*0.75=12的时候，数组大小就会扩容</p>
+<img src="https://s3.ax1x.com/2020/12/28/rov98e.png" border="0">
+
+<blockquote>
+<p>如果大小超过最大值则无法扩容，如果在最大值和默认值之间则数组利用位运算扩大一倍</p>
+</blockquote>
+<img src="https://s3.ax1x.com/2020/12/28/roxIl4.png" border="0">
 
 
+
+
+
+
+
+<p><strong>hash值的计算：</strong> </p>
+<p>key值的hash值，低16位与高16位进行异或（为了减少hash冲突），之后put方法中再与数组长度-1进行与运算。</p>
+<img src="https://s3.ax1x.com/2020/12/28/roLWB6.png" border="0">
+
+<img src="https://s3.ax1x.com/2020/12/28/roOe5F.png" border="0">
+
+<p><strong>put方法：</strong></p>
+<p>大致分为四种情况</p>
+<p>1.slot为null，hash值没有冲突，直接把key和value封装成node对象占用数组的位置就行</p>
+<p>2.slot不为null，但是还没链化，先判断key是否相等，如果相等直接替换，否则就算hash冲突，采用尾插法插入在这个slot后面</p>
+<p>3.slot不为null，已经链化，逐个判断key是否相等，相等直接替换，否则的话，先要判断链表长度是否达到树化阀值（8），如果达到树化条件则调用树化方法（里面会再根据数组大小判断是扩容还是树化）</p>
+<p>4.slot已经树化，需要对红黑树进行操作</p>
+<p><strong>红黑树：</strong></p>
+<p>红黑树是一种含有红黑结点并能自平衡的二叉查找树。它必须满足下面性质：</p>
+<ul>
+<li><p>性质1：每个节点要么是黑色，要么是红色。</p>
+</li>
+<li><p>性质2：根节点是黑色。</p>
+</li>
+<li><p>性质3：每个叶子节点（NIL）是黑色。</p>
+</li>
+<li><p>性质4：每个红色结点的两个子结点一定都是黑色。（红色节点不会相连）</p>
+</li>
+<li><p><strong>性质5：任意一结点到每个叶子结点的路径都包含数量相同的黑结点。</strong></p>
+<p>参考自（<a href="https://www.jianshu.com/p/e136ec79235c）" target="_blank" rel="noopener">https://www.jianshu.com/p/e136ec79235c）</a></p>
+</li>
+</ul>
+<p>新插入的节点一定是红色节点</p>
+<h2 id="java异常"><a href="#java异常" class="headerlink" title="java异常"></a>java异常</h2><blockquote>
+<p>Error和Exception</p>
+</blockquote>
+<img src="https://s3.ax1x.com/2020/12/15/ruThGD.png" border="0">
+
+
+
+<p><strong>Error</strong>:程序无法处理的系统错误，编译器不做检查,属于JVM需要负担的责任<br><strong>Exception</strong>:程序可以处理的异常，捕获后可能恢复<br>前者是程序无法处理的错误，后者是可以处理的异常</p>
+<p><strong>RuntimeException</strong>:不可预知的，程序应当自行避免<br><strong>非RuntimeException</strong>:可预知的，从编译器校验的异常,编译都无法通过</p>
+<p><strong>RuntimeException</strong></p>
+<pre><code>1.NullPointerException-空指针引用异常
+2.ClassCastException-类型强制转换异常
+3.IllegalArgumentException-传递非法参数异常
+4.IndexOutOfBoundsException-下标越界异常
+5.NumberFormatException-数字格式异常</code></pre><p><strong>非RuntimeException</strong></p>
+<pre><code>1.ClassNotFoundException-找不到指定class的异常
+2.IOException-IO操作异常</code></pre><p><strong>Error</strong></p>
+<pre><code>1.NoClassDefFoundError-找不到class定义的异常
+2.StackOverflowError-深递归导致栈被耗尽而抛出的异常
+3.OutOfMemoryError-内存溢出异常</code></pre>
             </div>
             <hr/>
 
@@ -503,7 +587,7 @@
                     </i>
                 </span>
                 <span class="reprint-info">
-                    <a href="http://taotao-web.github.io/2020/12/06/mysql事务/">http://taotao-web.github.io/2020/12/06/mysql事务/</a>
+                    <a href="http://taotao-web.github.io/2020/12/15/java常用类库/">http://taotao-web.github.io/2020/12/15/java常用类库/</a>
                 </span>
             </div>
             <div class="reprint__notice">
@@ -541,12 +625,8 @@
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/mysql/">
-                                    <span class="chip bg-color">mysql</span>
-                                </a>
-                            
-                                <a href="/tags/数据库/">
-                                    <span class="chip bg-color">数据库</span>
+                                <a href="/tags/java/">
+                                    <span class="chip bg-color">java</span>
                                 </a>
                             
                         </div>
@@ -592,27 +672,21 @@
             <div class="article-badge left-badge text-color">
                 <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
             <div class="card">
-                <a href="/2020/12/15/java常用类库/">
+                <a href="/2020/12/15/排序/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="java常用类库">
+                        <img src="/medias/featureimages/5.jpg" class="responsive-img" alt="排序">
                         
-                        <span class="card-title">java常用类库</span>
+                        <span class="card-title">排序</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            Collectionlist和set
-
-concurrentHashMap
-1.8之前采用segement，一个数组中包含多个数组分别加锁，每个segement存储的是数组和链表
-
-
-
-
-1.8之后采取的是和hashmap一样的散列表+链表
+                            快速排序 public void quicksort(int[] seqlist,int left,int right){
+        if(left>right) return;
+        int middle = divid(
                         
                     </div>
                     <div class="publish-info">
@@ -630,8 +704,8 @@ concurrentHashMap
                 
                 <div class="card-action article-tags">
                     
-                    <a href="/tags/java/">
-                        <span class="chip bg-color">java</span>
+                    <a href="/tags/算法/">
+                        <span class="chip bg-color">算法</span>
                     </a>
                     
                 </div>
@@ -645,24 +719,22 @@ concurrentHashMap
                 下一篇&nbsp;<i class="fas fa-chevron-right"></i>
             </div>
             <div class="card">
-                <a href="/2020/12/06/mysql锁/">
+                <a href="/2020/12/06/mysql事务/">
                     <div class="card-image">
                         
                         
-                        <img src="/medias/featureimages/6.jpg" class="responsive-img" alt="mysql锁-myisam与innodb">
+                        <img src="/medias/featureimages/9.jpg" class="responsive-img" alt="mysql事务并发访问产生的问题和事务隔离机制">
                         
-                        <span class="card-title">mysql锁-myisam与innodb</span>
+                        <span class="card-title">mysql事务并发访问产生的问题和事务隔离机制</span>
                     </div>
                 </a>
                 <div class="card-content article-content">
                     <div class="summary block-with-text">
                         
-                            
-共享锁（读锁 select操作），排他锁（写锁，更新操作）
-在加上写锁时，无法进行读写操作，加上读锁时，可以进行读操作但是不能进行写操作
-
-myisam默认表级锁，不支持行级锁
-只要对表中某个范围数据进行写操作，其他范围也无法进行读写操作
+                            事务隔离级别1.read uncommitted 未提交读事务可以读到其他事务未提交的数据，容易引发脏读
+脏读：
+读到其他事务未提交的数据，如果另一方事务回滚就会引发错误。
+2.read committed 提交读事务只能读到其他事务已经提
                         
                     </div>
                     <div class="publish-info">
